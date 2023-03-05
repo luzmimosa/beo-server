@@ -13,3 +13,5 @@ El servidor principal está pensado para actuar como intermediario entre los usu
 - Esqueleto del proyecto
 - Creación del sistema de log
 - Prototipados del sistema de consola
+- Estructura de datos implementando una cola circular (CircularQueue)
+- Estructura global de clave-valor (NamespacedKey)
