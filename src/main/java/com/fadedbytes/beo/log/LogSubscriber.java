@@ -9,8 +9,9 @@ public interface LogSubscriber {
 
     /**
      * Asks the subscriber to process the log message.
+     * @param level the level of the message
      * @param message The message to process.
      */
-    void print(@NotNull String message);
+    void processLog(@NotNull LogLevel level, @NotNull String message);
 
 }
