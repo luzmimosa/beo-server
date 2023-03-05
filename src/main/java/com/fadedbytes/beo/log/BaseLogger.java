@@ -83,6 +83,11 @@ public abstract class BaseLogger implements BeoLogger {
         SUBSCRIBERS.put(subscriber, maxLevel);
     }
 
+    @Override
+    public void unsubscribe(@NotNull LogSubscriber subscriber) {
+        SUBSCRIBERS.remove(subscriber);
+    }
+
     protected @NotNull HashMap<@NotNull LogSubscriber, @NotNull LogLevel> getSubscribers() {
         return SUBSCRIBERS;
     }
