@@ -39,4 +39,12 @@ public class NamespacedKey {
         return String.format("%s:%s", namespace, key);
     }
 
+    public static @NotNull NamespacedKey of(@NotNull String namespace, @NotNull String key) {
+        return new NamespacedKey(namespace, key);
+    }
+
+    public static @NotNull NamespacedKey of(@NotNull String key) {
+        return of(BEO_NAMESPACE, key);
+    }
+
 }
