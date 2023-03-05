@@ -106,6 +106,6 @@ public interface BeoLogger {
      * @param maxLevel The maximum level of the message to subscribe to.
      * @param subscriber The subscriber to call.
      */
-    void subscribe(@NotNull LogLevel maxLevel, @NotNull LogSuscriber subscriber);
+    void subscribe(@NotNull LogLevel maxLevel, @NotNull LogSubscriber subscriber);
 
 }
