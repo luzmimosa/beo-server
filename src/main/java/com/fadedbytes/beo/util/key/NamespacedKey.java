@@ -23,7 +23,7 @@ public class NamespacedKey {
     }
 
     private boolean isValidString(@NotNull String value) {
-        return value.matches("[a-z\\d_]+");
+        return value.matches("^[a-z\\d_]+$");
     }
 
     public @NotNull String getNamespace() {
