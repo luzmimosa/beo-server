@@ -108,4 +108,10 @@ public interface BeoLogger {
      */
     void subscribe(@NotNull LogLevel maxLevel, @NotNull LogSubscriber subscriber);
 
+    /**
+     * Unsubscribes the given method from this logger.
+     * @param subscriber The subscriber to unsubscribe.
+     */
+    void unsubscribe(@NotNull LogSubscriber subscriber);
+
 }
