@@ -9,7 +9,7 @@ El servidor principal está pensado para actuar como intermediario entre los usu
 
 
 ### Diario de desarrollo
-####05/03/2023
+#### 05/03/2023
 - Esqueleto del proyecto
 - Creación del sistema de log
 - Prototipados del sistema de consola
