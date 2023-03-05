@@ -39,6 +39,13 @@ public class NamespacedKey {
         return String.format("%s:%s", namespace, key);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof NamespacedKey otherKey) {
+            return otherKey.namespace.equals(this.namespace) && otherKey.key.equals(this.key);
+        } else return false;
+    }
+
     public static @NotNull NamespacedKey of(@NotNull String namespace, @NotNull String key) {
         return new NamespacedKey(namespace, key);
     }
