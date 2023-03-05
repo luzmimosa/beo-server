@@ -12,14 +12,7 @@ public class SimpleLogger extends BaseLogger {
         for (LogSubscriber subscriber : currentSubscribers.keySet()) {
             LogLevel subscriberLevel = currentSubscribers.get(subscriber);
             if (subscriberLevel.isAtLeast(level)) {
-                subscriber.print(
-                        (
-                                subscriberLevel.equals(LogLevel.DEBUG) ?
-                                        this.precisionTimestamp() :
-                                        this.timestamp()
-                        )
-                                + "> " + messageSupplier.get()
-                );
+                subscriber.processLog(level, messageSupplier.get());
             }
         }
     }
