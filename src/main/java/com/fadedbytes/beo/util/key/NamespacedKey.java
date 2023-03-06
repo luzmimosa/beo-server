@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 public class NamespacedKey {
 
     public static final String BEO_NAMESPACE = "beo";
+    public static final String REGEX = "^[a-z\\d_]+$";
 
     private final String namespace;
     private final String key;
@@ -20,7 +21,7 @@ public class NamespacedKey {
     }
 
     private boolean isValidString(@NotNull String value) {
-        return value.matches("^[a-z\\d_]+$");
+        return value.matches(REGEX);
     }
 
     public @NotNull String getNamespace() {
