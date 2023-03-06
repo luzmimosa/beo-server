@@ -40,10 +40,10 @@ public class ConsoleMessage {
 
     public @NotNull String format(@Nullable String origin) {
         return PRESET
-                .replace("%timestamp%", this.timestamp.format(DateTimeFormatter.ofPattern("HH:mm:ss")))
+                .replace("%timestamp%", this.getTimestamp().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
                 .replace("%origin%", origin == null ? "" : origin)
                 .replace("%messageColor%", this.color)
-                .replace("%message%", this.message);
+                .replace("%message%", this.getMessage());
     }
 
     public @NotNull String format() {
