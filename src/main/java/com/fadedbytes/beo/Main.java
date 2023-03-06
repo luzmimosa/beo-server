@@ -14,6 +14,7 @@ public class Main {
 
     private static LogManager logManager;
     private static BeoConsole console;
+    private static EventManager eventManager;
 
     public static void main(String[] args) {
         logManager = createLogManager();
