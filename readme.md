@@ -15,3 +15,8 @@ El servidor principal está pensado para actuar como intermediario entre los usu
 - Prototipados del sistema de consola
 - Estructura de datos implementando una cola circular (CircularQueue)
 - Estructura global de clave-valor (NamespacedKey)
+
+#### 06/03/2023
+- Avance en el sistema de eventos
+- Creación de las interfaces del servidor
+- Implementados colores en la consola
