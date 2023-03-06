@@ -2,8 +2,11 @@ package com.fadedbytes.beo;
 
 import com.fadedbytes.beo.console.BeoConsole;
 import com.fadedbytes.beo.console.ServerConsole;
+import com.fadedbytes.beo.event.EventManager;
 import com.fadedbytes.beo.log.LogLevel;
 import com.fadedbytes.beo.log.LogManager;
+import com.fadedbytes.beo.server.BeoServer;
+import com.fadedbytes.beo.server.StandaloneServer;
 import com.fadedbytes.beo.util.key.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,6 +21,11 @@ public class Main {
 
         logManager.getMainLogger().info("Starting Beo Server...");
 
+        BeoServer server = new StandaloneServer.Builder()
+                .logger(logManager.getMainLogger())
+                .name("test_server")
+                .console(console)
+                .build();
     }
 
     private static LogManager createLogManager() {
