@@ -11,8 +11,8 @@ import java.util.Objects;
 public class ConsoleMessage {
 
     private static final String PRESET =
-            "| " + ConsoleColor.RESET + ConsoleColor.BOLD + "[" + ConsoleColor.CYAN + "%timestamp%" + ConsoleColor.RESET + ConsoleColor.BOLD + "] " + ConsoleColor.RESET +
-            ConsoleColor.BRIGHT_BLACK + "[%origin%]" + ConsoleColor.CYAN + ": " + ConsoleColor.RESET +
+            "\u200E %messageColor%■ " + ConsoleColor.RESET + ConsoleColor.BOLD + "[" + ConsoleColor.CYAN + "%timestamp%" + ConsoleColor.RESET + ConsoleColor.BOLD + "] " + ConsoleColor.RESET +
+            ConsoleColor.BRIGHT_BLACK + ConsoleColor.BOLD + "[" + ConsoleColor.RESET + ConsoleColor.BRIGHT_BLACK + "%origin%" + ConsoleColor.BOLD + "]" + ConsoleColor.RESET + ConsoleColor.CYAN + ": " + ConsoleColor.RESET +
             "%messageColor%%message%";
     
     private final @NotNull String message;
