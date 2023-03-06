@@ -54,5 +54,9 @@ public class ConsoleMessage {
         return new ConsoleMessage(messageSupplier);
     }
 
+    public static @NotNull ConsoleMessage of(@NotNull String messageSupplier, @Nullable String messageColor) {
+        return new ConsoleMessage(messageSupplier, messageColor);
+    }
+
 
 }
