@@ -3,20 +3,34 @@ package com.fadedbytes.beo.event;
 import com.fadedbytes.beo.event.listener.EventListener;
 import com.fadedbytes.beo.event.listener.Listener;
 import com.fadedbytes.beo.event.type.Event;
-import com.fadedbytes.beo.log.LogManager;
+import com.fadedbytes.beo.log.BeoLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class EventManager {
 
-    private final ArrayList<RegisteredListener> REGISTERED_LISTENERS;
+    public static final ThreadGroup eventThreadGroup = new ThreadGroup("Event Thread Group");
 
-    public EventManager() {
+    private final ArrayList<RegisteredListener> REGISTERED_LISTENERS;
+    private final ConcurrentLinkedQueue<Event> EVENT_QUEUE;
+    private final Thread EVENT_LAUNCHER_THREAD;
+
+    private final BeoLogger logger;
+    private boolean isRunning;
+
+    public EventManager(BeoLogger logger) {
+        this.logger = logger;
+
         this.REGISTERED_LISTENERS = new ArrayList<>();
+        this.EVENT_QUEUE = new ConcurrentLinkedQueue<>();
+
+        this.isRunning = true;
+        this.EVENT_LAUNCHER_THREAD = new Thread(this::listenEventLaunches, "Event Manager");
     }
 
     public synchronized void addEventListener(Class<? extends Listener> listenerClass) throws IllegalArgumentException {
@@ -25,6 +39,7 @@ public class EventManager {
         }
 
         RegisteredListener registeredListener = new RegisteredListener(listenerClass);
+        this.logger.info("Registered listener: " + registeredListener.getListenerClass().getName());
         this.REGISTERED_LISTENERS.add(registeredListener);
     }
 
@@ -43,6 +58,50 @@ public class EventManager {
                         .filter(registeredListener -> registeredListener.getListenerClass().equals(listenerClass))
                         .toList()
         );
+    }
+
+    public void launchEvent(Event event) {
+        if (Thread.currentThread().equals(this.EVENT_LAUNCHER_THREAD)) {
+            this.EVENT_QUEUE.add(event);
+            return;
+        }
+
+        this.notifyListeners(event);
+        event.onLifecycleEnd();
+    }
+
+    private void notifyListeners(Event event) {
+        for (RegisteredListener registeredListener : this.REGISTERED_LISTENERS) {
+            registeredListener.getValidMethods().entrySet().stream()
+                    .filter(entry -> entry.getKey().isAssignableFrom(event.getClass()))
+                    .forEach(entry -> {
+                        try {
+                            Method[] methods = entry.getValue();
+                            for (Method method : methods) {
+                                method.invoke(null, event);
+                            }
+                        } catch (Exception e) {
+                            this.logger.error("Failed to invoke event listener method: " + e.getMessage(), e.getStackTrace());
+                        }
+                    });
+        }
+    }
+
+    private void listenEventLaunches() {
+        while (this.isRunning) {
+            Event event = this.EVENT_QUEUE.poll();
+            if (event == null) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                continue;
+            }
+
+            launchEvent(event);
+        }
     }
 
     private static class RegisteredListener {
@@ -74,13 +133,11 @@ public class EventManager {
                 if (eventClass == null) continue;
 
                 if (!validMethods.containsKey(eventClass)) {
-                    validMethods.put(eventClass, new Method[1]);
+                    validMethods.put(eventClass, new Method[] {method});
                 } else {
-                    Method[] methods = validMethods.get(eventClass);
-                    Method[] newMethods = new Method[methods.length + 1];
-                    System.arraycopy(methods, 0, newMethods, 0, methods.length);
-                    methods = newMethods;
-                    validMethods.put(eventClass, methods);
+                    List<Method> methods = new ArrayList<>(List.of(validMethods.get(eventClass)));
+                    methods.add(method);
+                    validMethods.put(eventClass, methods.toArray(new Method[0]));
                 }
             }
             return validMethods;

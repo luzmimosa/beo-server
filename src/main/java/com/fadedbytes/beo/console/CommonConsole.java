@@ -114,7 +114,10 @@ public sealed abstract class CommonConsole
 
     @Override
     public void processLog(@NotNull LogLevel level, @NotNull String message) {
-        this.printMessage(Thread.currentThread().getName() + "/" + level.name(), ConsoleMessage.of(message));
+        this.printMessage(
+                Thread.currentThread().getName() + "/" + level.name(),
+                ConsoleMessage.of(message, logLevelColor(level))
+        );
     }
 
     @Override
@@ -128,5 +131,16 @@ public sealed abstract class CommonConsole
                 e.printStackTrace();
             }
         }
+    }
+
+    private @NotNull String logLevelColor(@Nullable LogLevel level) {
+        if (level == null) return ConsoleColor.WHITE;
+        return switch (level) {
+            case DEBUG -> ConsoleColor.YELLOW;
+            case ERROR -> ConsoleColor.BRIGHT_RED;
+            case WARN -> ConsoleColor.BRIGHT_YELLOW;
+            case INFO -> ConsoleColor.BRIGHT_BLUE;
+            case EVENT -> ConsoleColor.BRIGHT_GREEN;
+        };
     }
 }

@@ -11,8 +11,8 @@ import java.util.Objects;
 public class ConsoleMessage {
 
     private static final String PRESET =
-            "| " + ConsoleColor.RESET + ConsoleColor.BOLD + "[" + ConsoleColor.CYAN + "%timestamp%" + ConsoleColor.RESET + ConsoleColor.BOLD + "] " + ConsoleColor.RESET +
-            ConsoleColor.BRIGHT_BLACK + "[%origin%]" + ConsoleColor.CYAN + ": " + ConsoleColor.RESET +
+            "\u200E %messageColor%■ " + ConsoleColor.RESET + ConsoleColor.BOLD + "[" + ConsoleColor.CYAN + "%timestamp%" + ConsoleColor.RESET + ConsoleColor.BOLD + "] " + ConsoleColor.RESET +
+            ConsoleColor.BRIGHT_BLACK + ConsoleColor.BOLD + "[" + ConsoleColor.RESET + ConsoleColor.BRIGHT_BLACK + "%origin%" + ConsoleColor.BOLD + "]" + ConsoleColor.RESET + ConsoleColor.CYAN + ": " + ConsoleColor.RESET +
             "%messageColor%%message%";
     
     private final @NotNull String message;
@@ -40,10 +40,10 @@ public class ConsoleMessage {
 
     public @NotNull String format(@Nullable String origin) {
         return PRESET
-                .replace("%timestamp%", this.timestamp.format(DateTimeFormatter.ofPattern("HH:mm:ss")))
+                .replace("%timestamp%", this.getTimestamp().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
                 .replace("%origin%", origin == null ? "" : origin)
                 .replace("%messageColor%", this.color)
-                .replace("%message%", this.message);
+                .replace("%message%", this.getMessage());
     }
 
     public @NotNull String format() {
@@ -52,6 +52,10 @@ public class ConsoleMessage {
 
     public static @NotNull ConsoleMessage of(@NotNull String messageSupplier) {
         return new ConsoleMessage(messageSupplier);
+    }
+
+    public static @NotNull ConsoleMessage of(@NotNull String messageSupplier, @Nullable String messageColor) {
+        return new ConsoleMessage(messageSupplier, messageColor);
     }
 
 
