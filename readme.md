@@ -20,3 +20,6 @@ El servidor principal está pensado para actuar como intermediario entre los usu
 - Avance en el sistema de eventos
 - Creación de las interfaces del servidor
 - Implementados colores en la consola
+
+#### 07/03/2023
+- Implementado el sistema dinámico de eventos
