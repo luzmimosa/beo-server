@@ -1,6 +1,7 @@
 package com.fadedbytes.beo.server;
 
 import com.fadedbytes.beo.console.BeoConsole;
+import com.fadedbytes.beo.event.EventManager;
 import com.fadedbytes.beo.log.BeoLogger;
 import com.fadedbytes.beo.util.key.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
@@ -19,13 +20,18 @@ public interface BeoServer {
     @NotNull String getName();
 
     /**
-     * @return The current main logger of this server.
+     * @return The main logger of this server.
      */
     @NotNull BeoLogger getLogger();
 
     /**
-     * @return The current console of this server.
+     * @return The console of this server.
      */
     @NotNull BeoConsole getConsole();
+
+    /**
+     * @return The event manager of this server.
+     */
+    @NotNull EventManager getEventManager();
 
 }
