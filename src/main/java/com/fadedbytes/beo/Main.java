@@ -3,10 +3,12 @@ package com.fadedbytes.beo;
 import com.fadedbytes.beo.console.BeoConsole;
 import com.fadedbytes.beo.console.ServerConsole;
 import com.fadedbytes.beo.event.EventManager;
+import com.fadedbytes.beo.log.BeoLogger;
 import com.fadedbytes.beo.log.LogLevel;
 import com.fadedbytes.beo.log.LogManager;
 import com.fadedbytes.beo.server.BeoServer;
 import com.fadedbytes.beo.server.StandaloneServer;
+import com.fadedbytes.beo.server.listener.ServerControlListener;
 import com.fadedbytes.beo.util.key.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,6 +41,7 @@ public class Main {
                 .logger(logManager.getMainLogger())
                 .name("test_server")
                 .console(console)
+                .eventManager(createEventManager())
                 .build();
     }
 
@@ -53,12 +56,22 @@ public class Main {
                 System.out
         );
 
+        LogLevel consoleLogLevel = isDebug ? LogLevel.DEBUG : LogLevel.INFO;
+
         console.addOutputStream(System.out);
-        console.bindLogger(logManager.getMainLogger(), isDebug ? LogLevel.DEBUG : LogLevel.ERROR);
+        console.bindLogger(logManager.getMainLogger(), consoleLogLevel);
+        console.bindLogger(logManager.getEventLogger(), consoleLogLevel);
 
         console.startConsole();
 
         return console;
+    }
+
+    private static EventManager createEventManager() {
+        EventManager eventManager = new EventManager(logManager.getEventLogger());
+        eventManager.addEventListener(ServerControlListener.class);
+
+        return eventManager;
     }
 
     private static void printDebugModeAlert(boolean skipDelay) {
