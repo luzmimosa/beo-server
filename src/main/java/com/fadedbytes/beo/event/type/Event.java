@@ -52,7 +52,10 @@ public abstract class Event {
      */
     public final void onLifecycleEnd() throws IllegalStateException {
         if (!Thread.currentThread().getThreadGroup().equals(EventManager.eventThreadGroup)) {
-            throw new WrongThreadException("Event lifecycle end must be called from the event thread group.");
+            throw new WrongThreadException(
+                    "Event lifecycle end must be called from the event thread group (" + EventManager.eventThreadGroup.getName() + ")"
+                    + " but was called from thread: " + Thread.currentThread().getThreadGroup().getName()
+            );
         }
         if (this.ended) {
             throw new IllegalStateException("Event lifecycle already ended: " + this.getClass().getName());
