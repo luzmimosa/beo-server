@@ -30,7 +30,8 @@ public class EventManager {
         this.EVENT_QUEUE = new ConcurrentLinkedQueue<>();
 
         this.isRunning = true;
-        this.EVENT_LAUNCHER_THREAD = new Thread(this::listenEventLaunches, "Event Manager");
+        this.EVENT_LAUNCHER_THREAD = new Thread(eventThreadGroup, this::listenEventLaunches, "Event Manager");
+        this.EVENT_LAUNCHER_THREAD.start();
     }
 
     public synchronized void addEventListener(Class<? extends Listener> listenerClass) throws IllegalArgumentException {
@@ -61,7 +62,7 @@ public class EventManager {
     }
 
     public void launchEvent(Event event) {
-        if (Thread.currentThread().equals(this.EVENT_LAUNCHER_THREAD)) {
+        if (!Thread.currentThread().equals(this.EVENT_LAUNCHER_THREAD)) {
             this.EVENT_QUEUE.add(event);
             return;
         }
@@ -90,17 +91,16 @@ public class EventManager {
     private void listenEventLaunches() {
         while (this.isRunning) {
             Event event = this.EVENT_QUEUE.poll();
-            if (event == null) {
+
+            if (event != null) {
+                launchEvent(event);
+            } else {
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(5);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                    return;
                 }
-                continue;
             }
-
-            launchEvent(event);
         }
     }
 
