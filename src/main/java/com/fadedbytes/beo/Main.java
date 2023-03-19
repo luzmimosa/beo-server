@@ -1,5 +1,7 @@
 package com.fadedbytes.beo;
 
+import com.fadedbytes.beo.api.level.Level;
+import com.fadedbytes.beo.api.level.world.space.TridimensionalFlatSpaceFabric;
 import com.fadedbytes.beo.console.BeoConsole;
 import com.fadedbytes.beo.console.ServerConsole;
 import com.fadedbytes.beo.event.EventManager;
@@ -11,6 +13,7 @@ import com.fadedbytes.beo.server.StandaloneServer;
 import com.fadedbytes.beo.server.listener.ServerControlListener;
 import com.fadedbytes.beo.util.key.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Range;
 
 import java.util.Arrays;
 
@@ -43,6 +46,12 @@ public class Main {
                 .console(console)
                 .eventManager(createEventManager())
                 .build();
+
+        // Debug: create a level and run it
+
+        Level level = createTestLevel(server);
+        level.runLevel();
+
     }
 
     private static LogManager createLogManager() {
@@ -90,5 +99,27 @@ public class Main {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    private static Level createTestLevel(BeoServer server) {
+        return new Level(
+                server,
+                new TridimensionalFlatSpaceFabric()
+        ) {
+            @Override
+            public @Range(from = 1, to = Integer.MAX_VALUE) int getMaxPlayers() {
+                return 2;
+            }
+
+            @Override
+            protected void onLevelStartSequence() {
+                this.getLogger().debug("Executing onLevelStartSequence");
+            }
+
+            @Override
+            protected void levelTick() {
+                this.getLogger().debug("Level tick: " + Math.random());
+            }
+        };
     }
 }
