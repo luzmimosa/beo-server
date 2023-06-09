@@ -15,6 +15,11 @@ public abstract class BaseLogger implements BeoLogger {
     }
 
     @Override
+    public void system(@NotNull String message) {
+        this.log(LogLevel.SYSTEM, message);
+    }
+
+    @Override
     public void debug(@NotNull Supplier<String> messageSupplier) {
         this.log(LogLevel.DEBUG, messageSupplier);
     }

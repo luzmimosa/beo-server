@@ -65,6 +65,42 @@ public abstract class SpaceFabric implements Freezable {
         }
     }
 
+    /**
+     * Moves the given space object by the given movement vector
+     * @param spaceObject The space object to move
+     * @param movementVector The vector to move the space object by
+     * @throws IllegalArgumentException If the space object is not in this space fabric
+     * @throws IllegalArgumentException If the location is not valid for this space fabric
+     */
+    public void moveObject(
+            SpaceObject spaceObject,
+            Vector movementVector
+    ) {
+        this.setObjectLocation(spaceObject, spaceObject.getLocation().add(movementVector));
+    }
+
+    /**
+     * Sets the location of the given space object
+     * @param spaceObject The space object to move
+     * @param location The new location of the space object
+     * @throws IllegalArgumentException If the space object is not in this space fabric
+     * @throws IllegalArgumentException If the location is not valid for this space fabric
+     */
+    public void setObjectLocation(
+            SpaceObject spaceObject,
+            Vector location
+    ) {
+        if (!this.spaceObjects().contains(spaceObject)) {
+            throw new IllegalArgumentException("Space object is not in this space fabric");
+        }
+
+        if (!this.isValidLocation(location)) {
+            throw new IllegalArgumentException("Vector is not valid for this space fabric");
+        }
+
+        spaceObject.setLocation(location);
+    }
+
     @Override
     public final boolean isFrozen() {
         return this.frozen;

@@ -7,4 +7,5 @@ public class BeoException extends Exception {
     public BeoException(String message) {
         super(message);
     }
+
 }

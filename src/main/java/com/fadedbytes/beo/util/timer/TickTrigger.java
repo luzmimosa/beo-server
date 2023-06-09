@@ -22,6 +22,10 @@ public final class TickTrigger {
         this.tps = tps;
     }
 
+    public void start() {
+        this.clock.start();
+    }
+
     /**
      * Requests the trigger to register a tick. If the tick should not be performed yet, the method returns false. If the tick should be performed, the method returns true and the tick is registered.
      * @return true if the tick should be performed, false otherwise

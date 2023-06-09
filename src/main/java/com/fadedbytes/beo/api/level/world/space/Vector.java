@@ -1,7 +1,7 @@
 package com.fadedbytes.beo.api.level.world.space;
 
 
-import com.fadedbytes.beo.api.exception.UnexistingDimensionException;
+import com.fadedbytes.beo.api.exception.level.runtime.UnexistingDimensionException;
 
 /**
  * Represents a vector in a BEO level
@@ -189,6 +189,13 @@ public record Vector(
         }
 
         return sum;
+    }
+
+    public Vector copy() {
+        Double[] newValues = new Double[dimensionCount()];
+        System.arraycopy(values, 0, newValues, 0, dimensionCount());
+
+        return new Vector(newValues);
     }
 
 

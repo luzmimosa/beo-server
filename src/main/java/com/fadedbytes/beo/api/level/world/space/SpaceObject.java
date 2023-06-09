@@ -8,6 +8,6 @@ public interface SpaceObject {
 
     @NotNull Vector getVelocity();
 
-
+    void setLocation(@NotNull Vector location);
 
 }

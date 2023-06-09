@@ -136,6 +136,7 @@ public sealed abstract class CommonConsole
     private @NotNull String logLevelColor(@Nullable LogLevel level) {
         if (level == null) return ConsoleColor.WHITE;
         return switch (level) {
+            case SYSTEM -> ConsoleColor.UNDERLINE;
             case DEBUG -> ConsoleColor.YELLOW;
             case ERROR -> ConsoleColor.BRIGHT_RED;
             case WARN -> ConsoleColor.BRIGHT_YELLOW;

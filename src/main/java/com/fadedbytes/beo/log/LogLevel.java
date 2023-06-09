@@ -2,6 +2,7 @@ package com.fadedbytes.beo.log;
 
 public enum LogLevel {
 
+    SYSTEM(1001),
     DEBUG(1000),
     ERROR(900),
     WARN(800),

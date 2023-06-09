@@ -6,15 +6,26 @@ import java.util.concurrent.TimeUnit;
 
 public class Clock {
     private final ScheduledExecutorService scheduler;
+    private final Runnable onTick;
+    private final long periodMs;
+    private boolean isRunning = true;
 
     public Clock(int tps, Runnable onTick) {
         this.scheduler = Executors.newSingleThreadScheduledExecutor();
-        long periodMs = 1000L / tps;
+        this.onTick = onTick;
+        this.periodMs = 1000L / tps;
+    }
 
-        scheduler.scheduleAtFixedRate(onTick, 0L, periodMs, TimeUnit.MILLISECONDS);
+    public void start() {
+        scheduler.scheduleAtFixedRate(() -> {
+            if (isRunning) {
+                onTick.run();
+            }
+        }, 0L, periodMs, TimeUnit.MILLISECONDS);
     }
 
     public void stop() {
+        this.isRunning = false;
         scheduler.shutdown();
     }
 }
