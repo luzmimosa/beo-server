@@ -42,3 +42,9 @@ build/
 /target/
 /out/
 /src/main/resources/META-INF/MANIFEST.MF
+/orbs/
+/levels/
+/logs/
+
+*.jar
+*.log
